@@ -2,6 +2,8 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
- div#wk_custom_tab_data{padding: 20px;}
- a#add_new_question{color: #555;border-color: #ccc;background: #f7f7f7;box-shadow: 0 1px 0 #ccc;vertical-align: top;padding: 5px 10px;margin: 10px;text-decoration: none;border-radius: 10px;}
-a#add_new_question:hover{background: #ececec}
+div#wk_custom_tab_data{padding: 20px;}
+button#add_new_question {color: #555;border-color: #ccc;background: #f7f7f7;box-shadow: 0 1px 0 #ccc;vertical-align: top;padding: 5px 10px;margin: 10px;text-decoration: none;border-radius: 10px;}
+button#add_new_question:hover {background: #ececec}
+#remove_data{font-size: 20px;color: red;}
+#remove_data:hover{cursor: pointer;}

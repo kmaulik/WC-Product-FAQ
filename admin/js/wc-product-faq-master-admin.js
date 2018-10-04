@@ -1,19 +1,33 @@
 jQuery(document).ready(function() {
-	
-	var counter = 2;
-	jQuery('#add_new_question').click(function() {
-        // var counter = 1;
-        // counter++;
-        if(counter>10){
-            alert("Only 10 textboxes allow");
-            return false;
-        }   
-        var newTextBoxDiv = jQuery(document.createElement('div'))
-         .attr("id", 'fname_div' + counter);
+	var counter = 1;
+	jQuery('#add_new_question').click(function (e) {
+    
 
-        newTextBoxDiv.after().html( '<h3>Contact Person Information:</h3>'+'<div class="nisl-wrap"><label><strong>First Name:</strong></label><input type="text" id="pmsafe_dealer_contact_fname'+ counter +'" name="pmsafe_dealer_contact_fname[]" value="" class="widefat"/></div><div class="nisl-wrap"><label><strong>Last Name:</strong></label><input type="text" id="pmsafe_dealer_contact_lname'+ counter +'" name="pmsafe_dealer_contact_lname[]" value="" class="widefat"/></div><div class="nisl-wrap"><label><strong>Phone Number:</strong></label><input type="text" id="pmsafe_dealer_contact_phone'+ counter +'" name="pmsafe_dealer_contact_phone[]" value="" class="widefat"/></div><div class="nisl-wrap"><label><strong>Email:</strong></label><input type="text" id="pmsafe_dealer_contact_email'+ counter +'" name="pmsafe_dealer_contact_email[]" value="" class="widefat"/></div>');
-        newTextBoxDiv.appendTo("#fname_divgroup");
-        counter++;
+
+    var newTextBoxDiv = jQuery(document.createElement('li'))
+     .attr("id",  counter).addClass('faq_questions');
+
+    newTextBoxDiv.after().html(
+      '<li class="ui-state-default" id="'+counter+'" data-id="'+counter+'"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item '+counter+'</li>&nbsp;<i class="fa fa-trash" data-id="'+counter+'" id="remove_data"></i><br/><br/>');
+
+    newTextBoxDiv.appendTo("#sortable");
+    counter++;
+
     });
 
+  jQuery(document).on("click", "#remove_data", function (event) {
+
+    var id = jQuery(this).data('id');
+    jQuery(this).parent(id).remove();
+    
+  });
+
+  
+    jQuery('#sortable').sortable({
+       update: function(event, ui) {
+          var productOrder = jQuery(this).sortable('toArray').toString();
+          jQuery("#sortable-9").text (productOrder);
+       }
+    });
+  
 });

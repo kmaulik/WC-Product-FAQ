@@ -74,6 +74,7 @@ class Wc_Product_Faq_Master_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wc-product-faq-master-public.css', array(), time(), 'all' );
+		wp_enqueue_style( 'acc-css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css', array(), time(), 'all' );
 
 	}
 
@@ -97,7 +98,7 @@ class Wc_Product_Faq_Master_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wc-product-faq-master-public.js', array( 'jquery' ), time(), false );
-		wp_enqueue_script( 'accordian_js', plugin_dir_url( __FILE__ ) . 'js/zebra_accordion.min.js', array( 'jquery' ), time(), false );
+		wp_enqueue_script( 'accordian_js', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array( 'jquery' ), time(), false );
 		
 
 	}
@@ -115,16 +116,55 @@ class Wc_Product_Faq_Master_Public {
 	public function product_faqs_tab_content( $slug, $tab ) {
 	?>
 		
-	<div class="accordion">
-	    <div class="accordion-header">Et quasi architecto</div>
-	    <div class="accordion-content">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</div>
-
-	    <div class="accordion-header">Nemo enim ipsam</div>
-	    <div class="accordion-content">Et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</div>
-
-	    <div class="accordion-header">Sed ut perspiciatis</div>
-	    <div class="accordion-content">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur.</div>
+	<div id="accordion">
+	  <h3>Section 1</h3>
+	  <div>
+	    <p>
+	    Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+	    ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+	    amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+	    odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+	    </p>
+	  </div>
+	  <h3>Section 2</h3>
+	  <div>
+	    <p>
+	    Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+	    purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+	    velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+	    suscipit faucibus urna.
+	    </p>
+	  </div>
+	  <h3>Section 3</h3>
+	  <div>
+	    <p>
+	    Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+	    Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+	    ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+	    lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+	    </p>
+	    <ul>
+	      <li>List item one</li>
+	      <li>List item two</li>
+	      <li>List item three</li>
+	    </ul>
+	  </div>
+	  <h3>Section 4</h3>
+	  <div>
+	    <p>
+	    Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+	    et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+	    faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+	    mauris vel est.
+	    </p>
+	    <p>
+	    Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+	    Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+	    inceptos himenaeos.
+	    </p>
+	  </div>
 	</div>
+ 
 	<?php
 	}
 

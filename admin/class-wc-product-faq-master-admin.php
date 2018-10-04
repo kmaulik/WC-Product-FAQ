@@ -52,7 +52,7 @@ class Wc_Product_Faq_Master_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		add_action( 'woocommerce_product_data_panels', array($this,'product_faqs_tab_content_data' ));
+		add_filter( 'woocommerce_product_data_panels', array($this, 'faq_options_product_tab_content') );
 
 
 	}
@@ -77,6 +77,7 @@ class Wc_Product_Faq_Master_Admin {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wc-product-faq-master-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'icon-css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), time(), 'all' );
 
 	}
 
@@ -100,6 +101,7 @@ class Wc_Product_Faq_Master_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wc-product-faq-master-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'sortable_ accordion', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -113,22 +115,40 @@ class Wc_Product_Faq_Master_Admin {
 	    return $default_tabs;
 	}
 	
-	public function product_faqs_tab_content_data() {
-		$html  = '';
-		$html .= '<div id="wk_custom_tab_data" class="panel woocommerce_options_panel">';
-		$html .= '<div id="ques_divgroup">';
-			$html .= '<div id="ques_div1">';
-				$html .= '<h3>Contact Information:</h3>';
-				$html .= '<div class="nisl-wrap">';
-				    $html .= '<label><strong>Add Question:</strong></label>';
-			    $html .= '<input type="text" id="pmsafe_dealer_contact_fname1" name="pmsafe_dealer_contact_fname[]" value="" class="widefat" />';
-			    $html .= '</div>';
-			$html .= '</div>';
-		$html .= '</div>';
-		$html .= '<a href="#" id="add_new_question">Add Question</a>';
-		$html .= '</div>';
-
-		echo $html;
+	public function faq_options_product_tab_content() {
+		
+		?> <div id="wk_custom_tab_data" class="panel woocommerce_options_panel">
+			<form class="form-horizontal press_agencies_form" method="post">
+			<div class="row">
+	        <div class="form-group col-md-12">
+	            <button type="button" class="btn btn-default" id="add_new_question">Add new Question</button>
+		            <div id="TextBoxesGroup">
+		            <?php $counter = 1;?>
+		            </div>
+	        		</div>
+	    		</div>
+			</form>
+		</div>
+		<?php
 	}
 
+	public function faq_meta_box() {
+    	add_meta_box( 'faq-meta-box', esc_html__( 'Woo FAQ', 'text-domain' ), array($this,'faq_callback'), 'product', 'normal', 'high' );
+	}
+	
+	public function faq_callback(){
+
+		?>
+		<button type="button" class="btn btn-default" id="add_new_question">Add Question</button>
+
+
+		<ul id="sortable">
+		  <!-- <li class="ui-state-default" id="1"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1</li>
+		  <li class="ui-state-default" id="2"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 2</li>
+		  <li class="ui-state-default" id="3"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 3</li>
+		  <li class="ui-state-default" id="4"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li> -->
+		</ul>
+		<h3><span id = "sortable-9"></span></h3>
+		<?php
+	}
 }
