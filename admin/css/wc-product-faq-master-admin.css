@@ -3,7 +3,19 @@
  * included in this file.
  */
 div#wk_custom_tab_data{padding: 20px;}
-button#add_new_question {color: #555;border-color: #ccc;background: #f7f7f7;box-shadow: 0 1px 0 #ccc;vertical-align: top;padding: 5px 10px;margin: 10px;text-decoration: none;border-radius: 10px;}
-button#add_new_question:hover {background: #ececec}
-#remove_data{font-size: 20px;color: red;}
+a#add_new_question {color: #555;border-color: #ccc;background: #f7f7f7;box-shadow: 0 1px 0 #ccc;vertical-align: top;padding: 5px 10px;margin: 10px;text-decoration: none;border-radius: 10px;}
+a#add_new_question:hover {background: #ececec}
+#remove_data{font-size: 20px;color: red;float: right;}
 #remove_data:hover{cursor: pointer;}
+.faq_questions > li {position: relative;}
+.faq_questions > li i#remove_data {position: absolute;right: 10px;top: 8px;}
+li.ui-state-default {padding: 15px;}
+li.ui-state-default i.fa-edit {
+    float: right;
+    margin-top: 3px;
+    margin-right: 9px;
+    font-size: 18px;
+}
+
+.faq-black-overlay {position: fixed;top: 0;left: 0;background: rgba(0, 0, 0, 0.56);z-index: 5;width: 100%;height: 100%;display: block;z-index: 99999;}
+.faq-load-image {height: 65px;left: 50%;margin-left: -32.5px;margin-top: -32.5px;position: fixed;top: 50%;width: 65px;display: block;z-index: 999991;}

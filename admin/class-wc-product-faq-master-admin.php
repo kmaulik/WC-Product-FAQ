@@ -78,6 +78,7 @@ class Wc_Product_Faq_Master_Admin {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wc-product-faq-master-admin.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'icon-css', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), time(), 'all' );
+	    wp_enqueue_style( 'jquery-modal', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css', array(), time(), 'all' );
 
 	}
 
@@ -102,6 +103,8 @@ class Wc_Product_Faq_Master_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wc-product-faq-master-admin.js', array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( 'sortable_ accordion', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'jquery-modal', 'https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js', array( 'jquery' ), time(), false );
+		wp_localize_script( $this->plugin_name, 'faqAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
 	}
 
@@ -137,18 +140,113 @@ class Wc_Product_Faq_Master_Admin {
 	}
 	
 	public function faq_callback(){
+		
+		include plugin_dir_path( __FILE__ ).'\partials\wc-product-faq-master-metaview-display.php';
+	}
+
+	public function add_product_faq_form_function(){
+		$product_id = $_POST['product_id'];
+		$faq_title = $_POST['title'];
+		$faq_description = $_POST['description'];
+
+			$product_faq = array();
+			$product_faq = array(
+				'faq_title' => $faq_title,
+				'faq_description' => $faq_description,
+			);
+			add_post_meta($product_id,'_wc_product_faq',$product_faq);	
+		
+		$response = array('status' => true);
+		echo json_encode($response);
+		die;
+	}
+
+	public function delete_product_faq_form_function(){
+		global $wpdb;
+		$meta_id = $_POST['id'];
+		
+	    $postmeta = $wpdb->prefix . 'postmeta';
+	    $wpdb->delete( $postmeta, array( 'meta_id' => $_POST['id'] ) );
+		
+	    
+		$response = array('status' => true);
+		echo json_encode($response);
+
+		die;
+	}
+
+	public function edit_product_faq_form_function(){
+		global $wpdb;
+		$meta_id = $_POST['id'];
+		$meta_data = get_faq_by_mid($meta_id);
+		// pr($meta_data);
+		foreach ($meta_data as $key => $value) {
+			$meta_value = unserialize($value->meta_value);
+			$faq_title = $meta_value['faq_title'];
+			$faq_description = $meta_value['faq_description'];
+
+		}
+		 
+		$response = array('status' => true, 'faq_title' => $faq_title, 'faq_description' => $faq_description);
+		echo json_encode($response);
+
+		die;
+	}
+
+	public function get_product_faq_records_function(){
+    	$product_id = $_POST['product_id'];
+    	
+
+ 		$get_faq = get_meta_by_post_id($product_id,'_wc_product_faq');
+
+ 		$counter = 1;
+		foreach ($get_faq as $key => $value) {
+			$meta_id = $value->meta_id;
+			$faqs = unserialize($value->meta_value);
 
 		?>
-		<button type="button" class="btn btn-default" id="add_new_question">Add Question</button>
-
-
-		<ul id="sortable">
-		  <!-- <li class="ui-state-default" id="1"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 1</li>
-		  <li class="ui-state-default" id="2"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 2</li>
-		  <li class="ui-state-default" id="3"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 3</li>
-		  <li class="ui-state-default" id="4"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>Item 4</li> -->
-		</ul>
-		<h3><span id = "sortable-9"></span></h3>
+		  <li class="ui-state-default" id="<?php echo $counter;?>" data-index="<?php echo $meta_id;?>" data-position="<?php echo $faqs['faq_position']; ?>"><?php echo $faqs['faq_title']; ?><i class="fa fa-trash" data-id="<?php echo $meta_id;?>" id="remove_data"></i><i class="fa fa-edit" data-id="<?php echo $meta_id;?>" id="edit_data"></i></li>
 		<?php
+			$counter++;
+		}
+		die;
+ 	
 	}
+
+	public function  faq_loader(){
+	    echo '<div class="faq-loader" style="display:none">';
+	        echo '<div class="faq-load-image"><img src="'.plugin_dir_url( __FILE__ ).'images/ajax-loader.gif" alt=""></div>';
+	        echo '<div class="faq-black-overlay"></div>';
+	    echo '</div>';
+	}
+
+	public function save_new_position_function(){
+		pr($_POST['positions']);
+		if(isset($_POST['update'])){
+			foreach ($_POST['positions'] as $position) {
+				$index = $position[0];
+
+				$newPosition = $position[1];
+				$meta_data = get_faq_by_mid($index);
+				
+				foreach ($meta_data as $key => $value) {
+					$meta_id = $value->meta_id;
+					$faqs = unserialize($value->meta_value);
+					$faqs['faq_position'] = $newPosition;
+					update_meta( $index, '_wc_product_faq', $faqs );
+					// global $wpdb;
+  			// 		$data = $wpdb->query( $wpdb->prepare("UPDATE $wpdb->postmeta SET meta_value = %s WHERE meta_id = %d", $index, $faqs) );
+  					
+				}
+				
+
+
+			}
+
+		}	
+
+		die;
+	}
+
+
 }

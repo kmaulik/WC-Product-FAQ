@@ -156,9 +156,25 @@ class Wc_Product_Faq_Master {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_filter( 'woocommerce_product_data_tabs', $plugin_admin,'product_faqs_admin_tab', 10, 1 );
+		// $this->loader->add_filter( 'woocommerce_product_data_tabs', $plugin_admin,'product_faqs_admin_tab', 10, 1 );
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'faq_meta_box');
- 
+		
+		$this->loader->add_action( 'wp_ajax_add_product_faq_form', $plugin_admin,'add_product_faq_form_function') ;
+		$this->loader->add_action( 'wp_ajax_nopriv_add_product_faq_form', $plugin_admin, 'add_product_faq_form_function');
+		
+		$this->loader->add_action( 'wp_ajax_delete_product_faq_form', $plugin_admin,'delete_product_faq_form_function') ;
+		$this->loader->add_action( 'wp_ajax_nopriv_delete_product_faq_form', $plugin_admin, 'delete_product_faq_form_function');
+ 		
+ 		$this->loader->add_action( 'wp_ajax_get_product_faq', $plugin_admin,'get_product_faq_records_function');
+		$this->loader->add_action( 'wp_ajax_nopriv_get_product_faq', $plugin_admin, 'get_product_faq_records_function');
+		
+		$this->loader->add_action( 'admin_footer',$plugin_admin, 'faq_loader');
+
+		$this->loader->add_action( 'wp_ajax_edit_product_faq_form', $plugin_admin,'edit_product_faq_form_function') ;
+		$this->loader->add_action( 'wp_ajax_nopriv_edit_product_faq_form', $plugin_admin, 'edit_product_faq_form_function');
+
+		$this->loader->add_action( 'wp_ajax_save_new_position', $plugin_admin,'save_new_position_function') ;
+		$this->loader->add_action( 'wp_ajax_nopriv_save_new_position', $plugin_admin, 'save_new_position_function');
 
 	}
 
@@ -219,5 +235,7 @@ class Wc_Product_Faq_Master {
 	public function get_version() {
 		return $this->version;
 	}
+
+	
 
 }

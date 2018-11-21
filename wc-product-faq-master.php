@@ -63,6 +63,7 @@ register_deactivation_hook( __FILE__, 'deactivate_wc_product_faq_master' );
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-wc-product-faq-master.php';
+require plugin_dir_path( __FILE__ ) . 'includes/global-functions.php';
 
 /**
  * Begins execution of the plugin.
